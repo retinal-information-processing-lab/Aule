@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PatternStim
+Comment=Patterned OSS stimulation (DMD patterns from microscope images)
+Exec=bash "/home/guiglaz/Documents/Aule - OSS patterned stimulation/PatternStim.sh"
+Path=/home/guiglaz/Documents/Aule - OSS patterned stimulation/
+Icon=utilities-terminal
+Terminal=false
+Categories=Science;Engineering;

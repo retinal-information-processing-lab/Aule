@@ -9,3 +9,6 @@ __pycache__/
 # lab reference stimuli (large, not part of the tool)
 ReversingGrating/
 PulsingGratingOSS/
+
+# Claude Code local settings (per-machine permission allowlist)
+.claude/

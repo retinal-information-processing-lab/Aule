@@ -5,9 +5,8 @@ import json
 import os
 from pathlib import Path
 
-import numpy as np
 
-from .binfile import BinFile, read_header, read_raw_frame_bytes
+from .binfile import BinFile, read_header
 from .patterns import load_masks
 
 

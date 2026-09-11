@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 from ..binfile import read_header
 from ..config import Config
@@ -38,7 +38,7 @@ class MergeTab(QtWidgets.QWidget):
         self.lbl_header = QtWidgets.QLabel("")
         form.addWidget(self.lbl_header, 1, 1)
 
-        form.addWidget(QtWidgets.QLabel("Pattern sets"), 2, 0, QtCore.Qt.AlignTop)
+        form.addWidget(QtWidgets.QLabel("Pattern sets"), 2, 0, QtCore.Qt.AlignmentFlag.AlignTop)
         self.list = QtWidgets.QListWidget()
         self.list.setMaximumHeight(110)
         form.addWidget(self.list, 2, 1)
@@ -61,8 +61,8 @@ class MergeTab(QtWidgets.QWidget):
 
         self.table = QtWidgets.QTableWidget(0, 4)
         self.table.setHorizontalHeaderLabels(["frame", "pos_idx", "neg_idx", "pixels on"])
-        self.table.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        self.table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.table.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeMode.Stretch)
+        self.table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         layout.addWidget(self.table, stretch=1)
 
         row = QtWidgets.QHBoxLayout()
@@ -152,7 +152,7 @@ class MergeTab(QtWidgets.QWidget):
             QtWidgets.QMessageBox.warning(self, "No output", "Choose an output bin path.")
             return
         if Path(out).exists():
-            if QtWidgets.QMessageBox.question(self, "Overwrite?", f"{out} exists. Overwrite it?") != QtWidgets.QMessageBox.Yes:
+            if QtWidgets.QMessageBox.question(self, "Overwrite?", f"{out} exists. Overwrite it?") != QtWidgets.QMessageBox.StandardButton.Yes:
                 return
         try:
             m = merge_bin(src, self.pattern_files(), out)

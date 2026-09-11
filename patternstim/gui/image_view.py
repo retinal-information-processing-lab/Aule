@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import numpy as np
 import pyqtgraph as pg
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 from ..geometry import Circle, Polygon, Shape, simplify_polyline
 
@@ -11,8 +11,8 @@ pg.setConfigOptions(imageAxisOrder="row-major", antialias=True)
 
 PEN_NORMAL = pg.mkPen((255, 220, 0), width=2)
 PEN_SELECTED = pg.mkPen((0, 255, 255), width=3)
-PEN_DISABLED = pg.mkPen((150, 150, 150), width=1, style=QtCore.Qt.DashLine)
-PEN_FIELD = pg.mkPen((0, 200, 255), width=1, style=QtCore.Qt.DashLine)
+PEN_DISABLED = pg.mkPen((150, 150, 150), width=1, style=QtCore.Qt.PenStyle.DashLine)
+PEN_FIELD = pg.mkPen((0, 200, 255), width=1, style=QtCore.Qt.PenStyle.DashLine)
 PEN_STROKE = pg.mkPen((255, 120, 0), width=2)
 HOVER_PEN = pg.mkPen((255, 255, 255), width=2)
 
@@ -33,7 +33,7 @@ class ToolViewBox(pg.ViewBox):
         self.setMouseMode(pg.ViewBox.PanMode)
 
     def mouseClickEvent(self, ev):
-        if self.mode in ("circle", "point") and ev.button() == QtCore.Qt.LeftButton:
+        if self.mode in ("circle", "point") and ev.button() == QtCore.Qt.MouseButton.LeftButton:
             ev.accept()
             p = self.mapToView(ev.pos())
             self.clicked.emit(p.x(), p.y())
@@ -41,7 +41,7 @@ class ToolViewBox(pg.ViewBox):
         super().mouseClickEvent(ev)
 
     def mouseDragEvent(self, ev, axis=None):
-        if self.mode == "freehand" and ev.button() == QtCore.Qt.LeftButton:
+        if self.mode == "freehand" and ev.button() == QtCore.Qt.MouseButton.LeftButton:
             ev.accept()
             p = self.mapToView(ev.pos())
             if ev.isStart():
@@ -192,8 +192,8 @@ class ImageCanvas(QtWidgets.QWidget):
     def set_mode(self, mode: str):
         assert mode in ("select", "circle", "freehand", "point")
         self.vb.mode = mode
-        cursor = {"select": QtCore.Qt.ArrowCursor, "circle": QtCore.Qt.CrossCursor,
-                  "freehand": QtCore.Qt.CrossCursor, "point": QtCore.Qt.CrossCursor}[mode]
+        cursor = {"select": QtCore.Qt.CursorShape.ArrowCursor, "circle": QtCore.Qt.CursorShape.CrossCursor,
+                  "freehand": QtCore.Qt.CursorShape.CrossCursor, "point": QtCore.Qt.CursorShape.CrossCursor}[mode]
         self.glw.setCursor(cursor)
 
     def set_field_outline(self, corners: np.ndarray | None):

@@ -1,13 +1,13 @@
-# pip alternative to environment.yml (any Python 3.10+):
+# pip alternative to environment.yml (Python 3.11+):
 #   python -m venv .venv && source .venv/bin/activate   (Windows: .venv\Scripts\activate)
 #   pip install -r requirements.txt
-numpy>=1.24,<2
-scipy
-scikit-image>=0.20
+numpy>=2
+scipy>=1.14
+scikit-image>=0.25
 tifffile
 imageio
 Pillow
 matplotlib
-PyQt5>=5.15
-pyqtgraph>=0.13,<0.14
+PyQt6>=6.7
+pyqtgraph>=0.14
 pytest

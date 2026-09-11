@@ -6,7 +6,7 @@ from pathlib import Path
 
 import numpy as np
 import pyqtgraph as pg
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from ..calibration import Calibration
 from ..config import Config
@@ -44,7 +44,7 @@ class SelectTab(QtWidgets.QWidget):
         root.setContentsMargins(4, 4, 4, 4)
 
         tb = QtWidgets.QToolBar()
-        tb.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        tb.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         root.addWidget(tb)
 
         self.act_open = tb.addAction("Load image…")
@@ -56,7 +56,7 @@ class SelectTab(QtWidgets.QWidget):
         tb.addWidget(self.channel_combo)
         tb.addSeparator()
 
-        self.tool_group = QtWidgets.QActionGroup(self)
+        self.tool_group = QtGui.QActionGroup(self)
         self.act_select = tb.addAction("Select (S)")
         self.act_circle = tb.addAction("Circle (C)")
         self.act_free = tb.addAction("Freehand (F)")
@@ -89,7 +89,7 @@ class SelectTab(QtWidgets.QWidget):
         self.act_undo.setShortcut("Ctrl+Z")
         self.act_undo.triggered.connect(self.undo)
         self.act_delete = tb.addAction("Delete")
-        self.act_delete.setShortcuts([QtGui.QKeySequence.Delete, QtGui.QKeySequence("Backspace")])
+        self.act_delete.setShortcuts([QtGui.QKeySequence.StandardKey.Delete, QtGui.QKeySequence("Backspace")])
         self.act_delete.triggered.connect(self.delete_selected)
         self.act_clear = tb.addAction("Clear all")
         self.act_clear.triggered.connect(self.clear_all)
@@ -110,7 +110,7 @@ class SelectTab(QtWidgets.QWidget):
 
         self.lbl_cal = QtWidgets.QLabel()
         self.lbl_cal.setWordWrap(True)
-        self.lbl_cal.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.lbl_cal.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.lbl_cal.linkActivated.connect(lambda _: self.calibrationTabRequested.emit())
         right.addWidget(self.lbl_cal)
         self._refresh_cal_label()
@@ -119,7 +119,7 @@ class SelectTab(QtWidgets.QWidget):
         lbl.setWordWrap(True)
         right.addWidget(lbl)
         self.list = QtWidgets.QListWidget()
-        self.list.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        self.list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.list.itemSelectionChanged.connect(self._on_list_selection)
         self.list.itemChanged.connect(self._on_list_item_changed)
         right.addWidget(self.list, stretch=2)
@@ -338,7 +338,7 @@ class SelectTab(QtWidgets.QWidget):
     def clear_all(self):
         if not self.items:
             return
-        if QtWidgets.QMessageBox.question(self, "Clear all shapes", "Remove all shapes?") != QtWidgets.QMessageBox.Yes:
+        if QtWidgets.QMessageBox.question(self, "Clear all shapes", "Remove all shapes?") != QtWidgets.QMessageBox.StandardButton.Yes:
             return
         self._push_undo()
         self._set_shapes([])
@@ -373,8 +373,8 @@ class SelectTab(QtWidgets.QWidget):
         self.list.clear()
         for it in self.items:
             li = QtWidgets.QListWidgetItem(it.shape.name)
-            li.setFlags(li.flags() | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsUserCheckable)
-            li.setCheckState(QtCore.Qt.Checked if it.shape.enabled else QtCore.Qt.Unchecked)
+            li.setFlags(li.flags() | QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+            li.setCheckState(QtCore.Qt.CheckState.Checked if it.shape.enabled else QtCore.Qt.CheckState.Unchecked)
             kind = "circle" if isinstance(it.shape, Circle) else "freehand"
             li.setToolTip(kind)
             self.list.addItem(li)
@@ -395,7 +395,7 @@ class SelectTab(QtWidgets.QWidget):
         name = li.text().strip() or it.shape.name
         if name != it.shape.name:
             it.set_name(name)
-        enabled = li.checkState() == QtCore.Qt.Checked
+        enabled = li.checkState() == QtCore.Qt.CheckState.Checked
         if enabled != it.shape.enabled:
             it.set_enabled(enabled)
         self._changed()

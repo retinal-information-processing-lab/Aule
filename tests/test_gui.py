@@ -7,7 +7,7 @@ import pytest
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 pytest.importorskip("pyqtgraph")
-from PyQt5 import QtWidgets, QtCore  # noqa: E402
+from PyQt6 import QtWidgets, QtCore  # noqa: E402
 
 from patternstim.binfile import BinFile, read_header  # noqa: E402
 from patternstim.calibration import apply_affine  # noqa: E402
@@ -31,7 +31,7 @@ def window(qapp, tmp_path, monkeypatch):
     w = MainWindow(cfg, config_path=tmp_path / "cfg.json")
     monkeypatch.setattr(QtWidgets.QMessageBox, "information", lambda *a, **k: None)
     monkeypatch.setattr(QtWidgets.QMessageBox, "warning", lambda *a, **k: None)
-    monkeypatch.setattr(QtWidgets.QMessageBox, "question", lambda *a, **k: QtWidgets.QMessageBox.Yes)
+    monkeypatch.setattr(QtWidgets.QMessageBox, "question", lambda *a, **k: QtWidgets.QMessageBox.StandardButton.Yes)
     w.show()
     yield w
     w.close()
@@ -114,7 +114,7 @@ def test_full_workflow(window, tmp_path, template_matrix):
     # rename + disable through the list
     li = sel.list.item(1)
     li.setText("cellA")
-    li.setCheckState(QtCore.Qt.Unchecked)
+    li.setCheckState(QtCore.Qt.CheckState.Unchecked)
     assert sel.pattern.shapes[1].name == "cellA" and not sel.pattern.shapes[1].enabled
 
     # move a circle ROI and check the shape follows

@@ -2,9 +2,7 @@
 from __future__ import annotations
 
 import argparse
-import os
 import sys
-from pathlib import Path
 
 from .config import Config, DEFAULT_CONFIG_PATH
 
@@ -25,41 +23,6 @@ def _config_from_args(a) -> Config:
     if a.pixel_size is not None:
         cfg.pixel_size_um = a.pixel_size
     return cfg
-
-
-SYSTEM_LIBSTDCXX = Path("/usr/lib/x86_64-linux-gnu/libstdc++.so.6")
-
-
-def _glibcxx_version(lib: Path) -> tuple[int, ...]:
-    """Highest GLIBCXX_x.y.z symbol version exported by a libstdc++ (() if unreadable)."""
-    import re
-    try:
-        found = re.findall(rb"GLIBCXX_(\d+)\.(\d+)\.(\d+)", lib.read_bytes())
-    except OSError:
-        return ()
-    return max((tuple(int(v) for v in m) for m in found), default=())
-
-
-def _reexec_with_system_libstdcxx(argv):
-    """Work around an older conda libstdc++ breaking the system OpenGL (Mesa) drivers on Linux.
-
-    Symptom: ``libGL error: failed to load driver: swrast`` at GUI start-up (anaconda base env).
-    Fix: preload the system libstdc++ before Qt loads, only when the environment's copy is older
-    than the system one. Set PATTERNSTIM_NO_PRELOAD=1 to disable.
-    """
-    if sys.platform != "linux" or os.environ.get("PATTERNSTIM_NO_PRELOAD"):
-        return
-    conda_lib = Path(sys.prefix) / "lib" / "libstdc++.so.6"
-    if not (conda_lib.exists() and SYSTEM_LIBSTDCXX.exists()):
-        return
-    if _glibcxx_version(conda_lib) >= _glibcxx_version(SYSTEM_LIBSTDCXX):
-        return
-    preload = os.environ.get("LD_PRELOAD", "")
-    if str(SYSTEM_LIBSTDCXX) in preload:
-        return
-    env = dict(os.environ)
-    env["LD_PRELOAD"] = f"{SYSTEM_LIBSTDCXX}:{preload}" if preload else str(SYSTEM_LIBSTDCXX)
-    os.execve(sys.executable, [sys.executable, "-m", "patternstim", *argv], env)
 
 
 def main(argv=None) -> int:
@@ -85,7 +48,6 @@ def main(argv=None) -> int:
     a = parser.parse_args(argv)
 
     if a.cmd == "gui":
-        _reexec_with_system_libstdcxx(sys.argv[1:] if argv is None else argv)
         from .gui.app import run
         return run(_config_from_args(a), config_path=a.config)
 

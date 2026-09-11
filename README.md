@@ -14,14 +14,14 @@ use, then start the GUI): double-click `PatternStim.bat` on Windows, run `./Patt
 Linux. `PatternStim.desktop` can be copied to the desktop / `~/.local/share/applications` for a
 menu entry (its `Exec` / `Path` lines hold the absolute path of this folder: edit them if it moves).
 
-Manual install, dedicated conda environment (Linux / Windows / macOS):
+Manual install, dedicated conda environment (Python 3.14, numpy 2, PyQt6; Linux / Windows / macOS):
 
 ```
 conda env create -f environment.yml
 conda activate patternstim
 ```
 
-Or with pip in any Python 3.10+ (virtualenv recommended):
+Or with pip in any Python 3.11+ (virtualenv recommended):
 
 ```
 pip install -r requirements.txt
@@ -36,10 +36,6 @@ python -m patternstim merge --bin orig.bin --patterns cells.patterns.npz --out o
 python -m patternstim info some.bin
 python -m pytest tests                    # self-tests
 ```
-
-On Linux with the anaconda Python, `gui` preloads the system `libstdc++` automatically (else Qt
-prints `libGL error: failed to load driver: swrast` and falls back to software rendering);
-`PATTERNSTIM_NO_PRELOAD=1` disables that.
 
 Rig defaults (rig 3, 672x672 frame, 2.5 µm/px) are editable in *Settings > Rig / DMD settings*
 and stored in `~/.patternstim/config.json` (or `--config` / `--rig` / `--dmd-size` / `--pixel-size`
@@ -108,6 +104,6 @@ patternstim/
   merge.py        append masks as pos/neg frames to a bin, index JSON
   images.py       image loading, warp to DMD space
   cli.py          gui | calib-bin | merge | info
-  gui/            PyQt5 + pyqtgraph application (select / merge / calibration tabs)
+  gui/            PyQt6 + pyqtgraph application (select / merge / calibration tabs)
 tests/            pytest (core + offscreen GUI end-to-end)
 ```

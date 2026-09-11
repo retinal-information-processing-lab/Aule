@@ -4,7 +4,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt6 import QtWidgets
 
 from ..config import Config, DEFAULT_CONFIG_PATH
 from .calibrate_tab import CalibrateTab
@@ -31,7 +31,7 @@ class SettingsDialog(QtWidgets.QDialog):
         self.age = QtWidgets.QSpinBox(); self.age.setRange(1, 3650); self.age.setSuffix(" days")
         self.age.setValue(config.calibration_max_age_days)
         form.addRow("warn if calibration older than", self.age)
-        bb = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+        bb = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         bb.accepted.connect(self.accept)
         bb.rejected.connect(self.reject)
         form.addRow(bb)
@@ -81,7 +81,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def open_settings(self):
         dlg = SettingsDialog(self.config, self)
-        if dlg.exec_() == QtWidgets.QDialog.Accepted:
+        if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             dlg.apply(self.config)
             self.config.save(self.config_path)
             self.calibrate_tab.set_config(self.config)
@@ -99,4 +99,4 @@ def run(config: Config | None = None, config_path=DEFAULT_CONFIG_PATH) -> int:
     config = config or Config.load(config_path)
     win = MainWindow(config, config_path)
     win.show()
-    return app.exec_()
+    return app.exec()

@@ -1,7 +1,6 @@
 """Shapes drawn on the camera image and their rasterisation into DMD masks."""
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass, field
 from typing import Iterable, Sequence
 
@@ -77,7 +76,8 @@ def simplify_polyline(points: Sequence[Sequence[float]], tolerance: float = 1.0)
         if seg_len < 1e-12:
             d = np.linalg.norm(mid - p0, axis=1)
         else:
-            d = np.abs(np.cross(seg, mid - p0)) / seg_len
+            rel = mid - p0
+            d = np.abs(seg[0] * rel[:, 1] - seg[1] * rel[:, 0]) / seg_len   # perpendicular distance
         j = int(np.argmax(d))
         if d[j] > tolerance:
             idx = i0 + 1 + j

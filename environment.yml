@@ -1,21 +1,20 @@
-# Dedicated environment for PatternStim.
+# Dedicated environment for PatternStim (modern stack: Python 3.14, numpy 2, Qt 6).
 #   conda env create -f environment.yml
 #   conda activate patternstim
 #   python -m patternstim gui
-# conda-forge is used on purpose: it ships a libstdc++ recent enough for the system OpenGL drivers.
 name: patternstim
 channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - python=3.11
-  - numpy>=1.24,<2
-  - scipy
-  - scikit-image>=0.20
+  - python=3.14
+  - numpy>=2
+  - scipy>=1.14
+  - scikit-image>=0.25
   - tifffile
   - imageio
   - pillow
   - matplotlib-base
-  - pyqt=5.15.*
-  - pyqtgraph=0.13.*
+  - pyqt6>=6.7
+  - pyqtgraph>=0.14
   - pytest

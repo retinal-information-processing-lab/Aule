@@ -10,16 +10,16 @@ from pathlib import Path
 
 import numpy as np
 import pyqtgraph as pg
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
-from ..calibration import (Calibration, decompose_similarity, make_calibration_bin, reference_image,
+from ..calibration import (Calibration, make_calibration_bin, reference_image,
                            refine_fit, target_geometry, template_signal, TARGET_FRAME_INDEX)
 from ..config import Config
 from ..images import load_image
 from .image_view import ImageCanvas
 
 TEMPLATE_COLOR = (255, 0, 255)
-PEN_TEMPLATE_FIELD = pg.mkPen(TEMPLATE_COLOR + (160,), width=1, style=QtCore.Qt.DashLine)
+PEN_TEMPLATE_FIELD = pg.mkPen(TEMPLATE_COLOR + (160,), width=1, style=QtCore.Qt.PenStyle.DashLine)
 
 INSTRUCTIONS = (
     "<b>When to calibrate</b><br>"
@@ -49,7 +49,7 @@ class TemplateROI(pg.ROI):
     def __init__(self, dmd_shape):
         self.dmd_shape = tuple(dmd_shape)
         self.mirror = False
-        pen = pg.mkPen(TEMPLATE_COLOR + (200,), width=1, style=QtCore.Qt.DashLine)
+        pen = pg.mkPen(TEMPLATE_COLOR + (200,), width=1, style=QtCore.Qt.PenStyle.DashLine)
         super().__init__([0, 0], [10, 10], pen=pen, hoverPen=pg.mkPen(TEMPLATE_COLOR, width=2),
                          aspectLocked=True, rotatable=True, resizable=True, removable=False)
         for corner in ([0, 0], [1, 0], [0, 1], [1, 1]):
@@ -149,7 +149,7 @@ class CalibrateTab(QtWidgets.QWidget):
         self.info_group.setChecked(True)
         info = QtWidgets.QLabel(INSTRUCTIONS)
         info.setWordWrap(True)
-        info.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+        info.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         info_lay = QtWidgets.QVBoxLayout(self.info_group)
         info_lay.addWidget(info)
         self.info_group.toggled.connect(info.setVisible)
@@ -225,7 +225,7 @@ class CalibrateTab(QtWidgets.QWidget):
         scroll.setWidget(panel)
         scroll.setWidgetResizable(True)
         scroll.setFixedWidth(480)
-        scroll.setFrameShape(QtWidgets.QFrame.NoFrame)
+        scroll.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         layout.addWidget(scroll)
 
         self.btn_gen.clicked.connect(self.generate_bin)
@@ -355,7 +355,7 @@ class CalibrateTab(QtWidgets.QWidget):
     def refine(self):
         if self.canvas.image is None:
             return
-        QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+        QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.CursorShape.WaitCursor)
         try:
             before = template_signal(self.canvas.image, self.params(), self.config)
             p = refine_fit(self.canvas.image, self.params(), self.config)

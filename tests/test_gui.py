@@ -9,12 +9,12 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 pytest.importorskip("pyqtgraph")
 from PyQt6 import QtWidgets, QtCore  # noqa: E402
 
-from patternstim.binfile import BinFile, read_header  # noqa: E402
-from patternstim.calibration import apply_affine  # noqa: E402
-from patternstim.config import Config  # noqa: E402
-from patternstim.geometry import Circle, Polygon  # noqa: E402
-from patternstim.gui.app import MainWindow  # noqa: E402
-from patternstim.patterns import load_masks  # noqa: E402
+from aule.binfile import BinFile, read_header  # noqa: E402
+from aule.calibration import apply_affine  # noqa: E402
+from aule.config import Config  # noqa: E402
+from aule.geometry import Circle, Polygon  # noqa: E402
+from aule.gui.app import MainWindow  # noqa: E402
+from aule.patterns import load_masks  # noqa: E402
 from tests.conftest import EXISTING_BIN, synthetic_camera_image  # noqa: E402
 
 
@@ -26,7 +26,7 @@ def qapp():
 @pytest.fixture
 def window(qapp, tmp_path, monkeypatch):
     # keep autosave / config out of the user's home
-    monkeypatch.setattr("patternstim.gui.select_tab.AUTOSAVE_PATH", tmp_path / "autosave.json")
+    monkeypatch.setattr("aule.gui.select_tab.AUTOSAVE_PATH", tmp_path / "autosave.json")
     cfg = Config()
     w = MainWindow(cfg, config_path=tmp_path / "cfg.json")
     monkeypatch.setattr(QtWidgets.QMessageBox, "information", lambda *a, **k: None)
@@ -183,7 +183,7 @@ def test_identity_calibration_and_settings(window, tmp_path):
 
 
 def test_stale_calibration_warning(window, tmp_path):
-    from patternstim.calibration import Calibration
+    from aule.calibration import Calibration
     cal = Calibration.identity(window.config)
     cal.method = "template"
     cal.created = "2026-01-01T09:00:00"

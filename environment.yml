@@ -1,8 +1,8 @@
-# Dedicated environment for PatternStim (modern stack: Python 3.14, numpy 2, Qt 6).
+# Dedicated environment for Aule (modern stack: Python 3.14, numpy 2, Qt 6).
 #   conda env create -f environment.yml
-#   conda activate patternstim
-#   python -m patternstim gui
-name: patternstim
+#   conda activate aule
+#   python -m aule gui
+name: aule
 channels:
   - conda-forge
   - nodefaults

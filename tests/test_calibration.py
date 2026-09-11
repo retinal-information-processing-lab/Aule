@@ -2,8 +2,8 @@ import json
 import numpy as np
 import pytest
 
-from patternstim.binfile import BinFile, read_header
-from patternstim.calibration import (Calibration, fit_affine, apply_affine, make_calibration_bin,
+from aule.binfile import BinFile, read_header
+from aule.calibration import (Calibration, fit_affine, apply_affine, make_calibration_bin,
                                      target_mask, target_geometry, similarity_matrix,
                                      dmd_to_camera_matrix, decompose_similarity, refine_fit,
                                      template_signal, reference_image)
@@ -112,7 +112,7 @@ def test_make_calibration_bin(config, tmp_path):
 
 
 def test_config_roundtrip_keeps_path(tmp_path):
-    from patternstim.config import Config
+    from aule.config import Config
     p = tmp_path / "cfg.json"
     cfg = Config.load(p)              # missing file -> defaults, remembers path
     assert cfg.path == str(p) and cfg.rig_id == 3 and cfg.calibration_max_age_days == 30

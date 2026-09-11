@@ -9,8 +9,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from patternstim.config import Config  # noqa: E402
-from patternstim.calibration import Calibration  # noqa: E402
+from aule.config import Config  # noqa: E402
+from aule.calibration import Calibration  # noqa: E402
 
 # Lab stimulus bins (not in the repository). When absent, equivalent synthetic bins are generated:
 # 15 frames of 672x672 written for rig 3, frame 0 black, 1 white, 2 grey (128), then gratings.
@@ -19,7 +19,7 @@ _LAB_BIN_2 = ROOT / "PulsingGratingOSS" / "Bin_Files" / "PulsingGrating_OssStim_
 
 
 def _synthetic_lab_bin(path: Path, seed: int) -> Path:
-    from patternstim.binfile import BinFile, apply_write_transform
+    from aule.binfile import BinFile, apply_write_transform
     n, h, w = 15, 672, 672
     rng = np.random.default_rng(seed)
     with BinFile(str(path), w, h, rig_id=3, nb_images=n, mode="w") as bf:
@@ -34,9 +34,9 @@ def _synthetic_lab_bin(path: Path, seed: int) -> Path:
 
 
 def _lab_bin_or_synthetic(lab_path: Path, name: str, seed: int) -> Path:
-    if lab_path.exists() and not os.environ.get("PATTERNSTIM_TEST_SYNTHETIC_BIN"):
+    if lab_path.exists() and not os.environ.get("AULE_TEST_SYNTHETIC_BIN"):
         return lab_path
-    cache = Path(tempfile.gettempdir()) / "patternstim_tests"
+    cache = Path(tempfile.gettempdir()) / "aule_tests"
     cache.mkdir(exist_ok=True)
     path = cache / name
     if not path.exists() or path.stat().st_size != 15 * 672 * 672 + 8:
@@ -79,7 +79,7 @@ def synthetic_matrix():
 @pytest.fixture
 def template_matrix():
     """Camera -> DMD similarity with the whole target visible in a 1000x1200 camera image."""
-    from patternstim.calibration import similarity_matrix
+    from aule.calibration import similarity_matrix
     return similarity_matrix((610.0, 480.0), 1.15, 10.0, True, (672, 672))
 
 
@@ -89,7 +89,7 @@ def synthetic_camera_image(matrix_cam_to_dmd, shape=(480, 640), noise=0.0, seed=
     Returns (image float32 (rows, cols), template params of the truth).
     """
     from scipy.ndimage import map_coordinates, gaussian_filter
-    from patternstim.calibration import target_mask, decompose_similarity
+    from aule.calibration import target_mask, decompose_similarity
 
     config = config or Config()
     mask = target_mask(config).astype(np.float32)

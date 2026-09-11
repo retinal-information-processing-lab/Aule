@@ -1,4 +1,4 @@
-"""Command line entry points: ``python -m patternstim <command>``."""
+"""Command line entry points: ``python -m aule <command>``."""
 from __future__ import annotations
 
 import argparse
@@ -26,7 +26,7 @@ def _config_from_args(a) -> Config:
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(prog="patternstim", description=__doc__)
+    parser = argparse.ArgumentParser(prog="aule", description=__doc__)
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     p_gui = sub.add_parser("gui", help="launch the graphical interface")

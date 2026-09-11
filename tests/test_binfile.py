@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from patternstim.binfile import BinFile, read_header, read_raw_frame_bytes, apply_write_transform
+from aule.binfile import BinFile, read_header, read_raw_frame_bytes, apply_write_transform
 from tests.conftest import EXISTING_BIN
 
 

@@ -3,12 +3,12 @@ import shutil
 import numpy as np
 import pytest
 
-from patternstim.binfile import BinFile, read_header, read_raw_frame_bytes
-from patternstim.calibration import Calibration
-from patternstim.cli import main
-from patternstim.geometry import Circle
-from patternstim.merge import merge_bin, plan_merge
-from patternstim.patterns import PatternSet, load_masks
+from aule.binfile import BinFile, read_header, read_raw_frame_bytes
+from aule.calibration import Calibration
+from aule.cli import main
+from aule.geometry import Circle
+from aule.merge import merge_bin, plan_merge
+from aule.patterns import PatternSet, load_masks
 from tests.conftest import EXISTING_BIN, EXISTING_BIN_2
 
 

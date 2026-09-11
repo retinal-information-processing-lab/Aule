@@ -15,7 +15,7 @@ from ..images import load_image, warp_to_dmd, to_uint8
 from ..patterns import PatternSet
 from .image_view import ImageCanvas, ShapeItem, stroke_to_polygon
 
-AUTOSAVE_PATH = Path.home() / ".patternstim" / "autosave.patterns.json"
+AUTOSAVE_PATH = Path.home() / ".aule" / "autosave.patterns.json"
 
 
 class SelectTab(QtWidgets.QWidget):

@@ -51,7 +51,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.config_path = config_path
         if not config.path:
             config.path = str(config_path)
-        self.setWindowTitle("PatternStim - patterned OSS stimulation")
+        self.setWindowTitle("Aule - patterned OSS stimulation")
         self.resize(1400, 900)
 
         self.tabs = QtWidgets.QTabWidget()

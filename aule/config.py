@@ -6,7 +6,7 @@ import os
 from dataclasses import dataclass, asdict, field
 from pathlib import Path
 
-DEFAULT_CONFIG_PATH = Path.home() / ".patternstim" / "config.json"
+DEFAULT_CONFIG_PATH = Path.home() / ".aule" / "config.json"
 
 
 @dataclass

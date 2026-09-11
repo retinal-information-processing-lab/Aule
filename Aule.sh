@@ -1,5 +1,7 @@
 #!/bin/bash
 # Launch the Aule GUI in its conda environment (creates the env on first use).
+# The GUI is started detached, so the terminal that ran this script can close immediately.
+# Output of the GUI goes to ~/.aule/aule.log.
 parent_path=$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)
 cd "$parent_path"
 
@@ -17,4 +19,6 @@ if ! conda env list | grep -qE "^aule[[:space:]]"; then
 fi
 
 conda activate aule
-python -m aule gui "$@"
+mkdir -p "$HOME/.aule"
+setsid python -m aule gui "$@" > "$HOME/.aule/aule.log" 2>&1 < /dev/null &
+disown

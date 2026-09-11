@@ -10,8 +10,8 @@ with the inactive LED) so that the total luminance is uniform over the retina.
 ## Install
 
 One-click launchers (they create the `aule` conda env from `environment.yml` on first
-use, then start the GUI): double-click `Aule.bat` on Windows, run `./Aule.sh` on
-Linux. `Aule.desktop` can be copied to the desktop / `~/.local/share/applications` for a
+use, then start the GUI detached, so no console stays open): double-click `Aule.bat` on
+Windows, run `./Aule.sh` on Linux (GUI output goes to `~/.aule/aule.log`). `Aule.desktop` can be copied to the desktop / `~/.local/share/applications` for a
 menu entry (its `Exec` / `Path` lines hold the absolute path of this folder: edit them if it moves).
 
 Manual install, dedicated conda environment (Python 3.14, numpy 2, PyQt6; Linux / Windows / macOS):

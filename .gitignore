@@ -1,6 +1,7 @@
-binfile.py
-colors_utils.py
-simulation_grating.py
+# lab scripts kept at the root for reference (not part of the tool)
+/binfile.py
+/colors_utils.py
+/simulation_grating.py
 __pycache__/
 .pytest_cache/
 *.pyc
